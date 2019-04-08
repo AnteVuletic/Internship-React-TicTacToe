@@ -12,25 +12,39 @@ class Game extends React.Component {
             viewHistory : 1,
             gameHistory : [
                 {
-                    isCurrentPlayerX : true,
+                    isNextPlayerX : true,
                     movePlayed: null
                 }
             ]
         }
     }
     handleHistory = (moveIndex) =>{
-        this.setState((previousState)=>{
-            return{
-                viewHistory : previousState.viewHistory +1,
-                gameHistory : [
-                    ...previousState.gameHistory,
-                    {
-                        isCurrentPlayerX : !previousState.gameHistory[previousState.gameHistory.length-1].isCurrentPlayerX,
-                        movePlayed: moveIndex
-                    }
-                ]
-            }
-        })
+        if(this.state.viewHistory - this.state.gameHistory.length < 0){
+            this.setState((previousState)=>{
+                let newPreviousHistory = [...previousState.gameHistory.slice(0,this.state.viewHistory)];
+                return{
+                    viewHistory : this.state.viewHistory +1,
+                    gameHistory : [...newPreviousHistory,{
+                        isNextPlayerX : !newPreviousHistory[newPreviousHistory.length -1].isNextPlayerX,
+                        movePlayed : moveIndex
+                    }]
+                }
+            });
+        }
+        else{
+            this.setState((previousState)=>{
+                return{
+                    viewHistory : previousState.viewHistory +1,
+                    gameHistory : [
+                        ...previousState.gameHistory,
+                        {
+                            isNextPlayerX : !previousState.gameHistory[previousState.gameHistory.length-1].isNextPlayerX,
+                            movePlayed: moveIndex
+                        }
+                    ]
+                }
+            });
+        }
     }
     handleViewHistory = (index) =>{
         this.setState({

@@ -6,10 +6,10 @@ import Square from '../Square/square';
 
 const Board = (props) =>{
     const handleCurrentPlayer = () =>{
-        return props.history[props.history.length-1].isCurrentPlayerX ? 'X': 'O';
+        return props.history[props.history.length-1].isNextPlayerX ? 'X': 'O';
     }
     const handlePlayerOnIndex = (index) =>{
-        return props.history[index].isCurrentPlayerX ? 'X' : 'O';
+        return props.history[index].isNextPlayerX ? 'O' : 'X';
     }
     const handleFieldPlayed = (item) =>{
         let indexFound =  props.history.findIndex((historyItem)=>historyItem.movePlayed === item);
