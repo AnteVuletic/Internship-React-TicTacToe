@@ -4,35 +4,47 @@ import './board.css';
 
 import Square from '../Square/square';
 
-class Board extends React.Component {
-    renderSquare(i) {
-      return <Square />;
+const Board = (props) =>{
+    const handleCurrentPlayer = () =>{
+        return props.history[props.history.length-1].isCurrentPlayerX ? 'X': 'O';
     }
-  
-    render() {
-      const status = 'Next player: X';
-  
-      return (
-        <div>
-          <div className="status">{status}</div>
-          <div className="board-row">
-            {this.renderSquare(0)}
-            {this.renderSquare(1)}
-            {this.renderSquare(2)}
-          </div>
-          <div className="board-row">
-            {this.renderSquare(3)}
-            {this.renderSquare(4)}
-            {this.renderSquare(5)}
-          </div>
-          <div className="board-row">
-            {this.renderSquare(6)}
-            {this.renderSquare(7)}
-            {this.renderSquare(8)}
-          </div>
-        </div>
-      );
+    const handlePlayerOnIndex = (index) =>{
+        return props.history[index].isCurrentPlayerX ? 'X' : 'O';
     }
+    const handleFieldPlayed = (item) =>{
+        let indexFound =  props.history.findIndex((historyItem)=>historyItem.movePlayed === item);
+        return indexFound;
+    }
+    const renderSquare = (item,visible, labelOnIndex) => {
+      return <Square key={item} handleVisible={visible} indexSquare={item} label={labelOnIndex} onSquareClicked={handleSquareClicked} />;
+    }
+    const handleSquareClicked = (indexOfClicked) =>{
+        props.onMovePlayed(indexOfClicked);
+    }
+
+    const BOARD_INDEXES = [[0,1,2],[3,4,5],[6,7,8]];
+    const status = `Next player: ${handleCurrentPlayer()}`;
+  
+    return (
+    <div>
+        <div className="status">{status}</div>
+        {
+            BOARD_INDEXES.map((rowItems,rowIndex) =>{
+                return (
+                <div key={rowIndex} className="board-row">
+                    {
+                        rowItems.map((itemRow)=>{
+                            let indexFound = handleFieldPlayed(itemRow)
+                            return indexFound !== -1 ?
+                            renderSquare(itemRow,true,handlePlayerOnIndex(indexFound)) :
+                            renderSquare(itemRow,false,'')
+                        })
+                    }
+                </div>)
+            })
+        }
+    </div>
+    );
 }
 
 export default Board;
