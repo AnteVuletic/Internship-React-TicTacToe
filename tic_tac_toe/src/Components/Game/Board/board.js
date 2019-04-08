@@ -8,6 +8,9 @@ const Board = (props) =>{
     const handleCurrentPlayer = () =>{
         return props.history[props.history.length-1].isNextPlayerX ? 'X': 'O';
     }
+    const handlePlayerWinner = () =>{
+        return props.history[props.history.length-1].isNextPlayerX ? 'O' : 'X';
+    }
     const handlePlayerOnIndex = (index) =>{
         return props.history[index].isNextPlayerX ? 'O' : 'X';
     }
@@ -23,8 +26,8 @@ const Board = (props) =>{
     }
 
     const BOARD_INDEXES = [[0,1,2],[3,4,5],[6,7,8]];
-    const status = `Next player: ${handleCurrentPlayer()}`;
-  
+    const status = props.win ? `Player ${handlePlayerWinner()} is the winner` : `Next player: ${handleCurrentPlayer()}`;
+    
     return (
     <div>
         <div className="status">{status}</div>
